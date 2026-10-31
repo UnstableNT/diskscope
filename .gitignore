@@ -1,0 +1,10 @@
+bin/
+obj/
+.vs/
+*.user
+TestResults/
+artifacts/
+*.vhd
+*.vhdx
+*.log
+publish/

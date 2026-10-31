@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DiskScope.App.Views.EraseView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:controls="using:DiskScope.App.Controls">
+  <Grid Padding="16,8,0,16" ColumnSpacing="8">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <Grid RowSpacing="8">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <InfoBar
+          IsClosable="False"
+          IsOpen="True"
+          Message="Löschen überschreibt alle Daten im gewählten Bereich unwiderruflich. Das Systemlaufwerk ist immer gesperrt; Laufwerke mit Volumes nur nach ausdrücklichem Aushängen. Vor dem Start erscheint der Probelauf, bestätigt wird durch Eintippen der Modellbezeichnung."
+          Severity="Error"
+          Title="Achtung" />
+      <Border Grid.Row="1" Padding="8" Background="{StaticResource PlotBackgroundBrush}" CornerRadius="8">
+        <canvas:CanvasControl x:Name="BlockCanvas" ClearColor="#161B22" Draw="OnDraw" SizeChanged="OnGridSizeChanged" />
+      </Border>
+      <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="16">
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <Rectangle Width="12" Height="12" Fill="#4CC2FF" />
+          <TextBlock Text="Überschrieben" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <Rectangle Width="12" Height="12" Fill="#F85149" />
+          <TextBlock Text="Fehler" />
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Spacing="6">
+          <Rectangle Width="12" Height="12" Fill="#30363D" />
+          <TextBlock Text="Offen" />
+        </StackPanel>
+      </StackPanel>
+    </Grid>
+
+    <ScrollViewer Grid.Column="1">
+      <StackPanel Style="{StaticResource SidebarPanelStyle}">
+        <Button
+            HorizontalAlignment="Stretch"
+            Command="{x:Bind ViewModel.StartStopCommand}"
+            Content="{x:Bind ViewModel.StartStopText, Mode=OneWay}"
+            IsEnabled="{x:Bind ViewModel.CanStartStop, Mode=OneWay}"
+            Style="{StaticResource AccentButtonStyle}" />
+        <Button HorizontalAlignment="Stretch" Command="{x:Bind ViewModel.DryRunCommand}" Content="Probelauf" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+        <ProgressBar Maximum="100" Value="{x:Bind ViewModel.Progress, Mode=OneWay}" />
+        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.Status, Mode=OneWay}" TextWrapping="Wrap" />
+
+        <TextBlock Style="{StaticResource SidebarHeaderStyle}" Text="Optionen" />
+        <ComboBox HorizontalAlignment="Stretch" Header="Füllmuster" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" SelectedIndex="{x:Bind ViewModel.PatternIndex, Mode=TwoWay}">
+          <x:String>Nullen</x:String>
+          <x:String>Zufallsdaten</x:String>
+          <x:String>Festes Byte</x:String>
+        </ComboBox>
+        <TextBox Header="Füllbyte (hexadezimal)" IsEnabled="{x:Bind ViewModel.UsesFixedByte, Mode=OneWay}" Text="{x:Bind ViewModel.FixedByte, Mode=TwoWay}" />
+        <NumberBox Header="Durchgänge" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" Maximum="35" Minimum="1" SpinButtonPlacementMode="Compact" Value="{x:Bind ViewModel.Passes, Mode=TwoWay}" />
+        <CheckBox Content="Prüflesen" IsChecked="{x:Bind ViewModel.Verify, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+        <CheckBox Content="Volumes vorher aushängen" IsChecked="{x:Bind ViewModel.DismountVolumes, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+        <controls:RangeOption ViewModel="{x:Bind ViewModel}" />
+
+        <TextBlock Style="{StaticResource SidebarHeaderStyle}" Text="Fortschritt" />
+        <Grid ColumnSpacing="8" RowSpacing="8">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+          </Grid.RowDefinitions>
+          <controls:MetricTile Label="Durchgang" Value="{x:Bind ViewModel.Pass, Mode=OneWay}" />
+          <controls:MetricTile Grid.Column="1" Label="Geschwindigkeit" Value="{x:Bind ViewModel.Speed, Mode=OneWay}" />
+          <controls:MetricTile Grid.Row="1" Label="Fehler" Value="{x:Bind ViewModel.Errors, Mode=OneWay}" />
+          <controls:MetricTile Grid.Row="1" Grid.Column="1" Label="Position" Value="{x:Bind ViewModel.Position, Mode=OneWay}" />
+        </Grid>
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

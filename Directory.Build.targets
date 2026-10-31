@@ -1,0 +1,7 @@
+<Project>
+  <ItemGroup>
+    <!-- DiskScope.Core.Devices.DriveInfo collides with System.IO.DriveInfo; the alias wins over the implicit System.IO import. -->
+    <Using Include="DiskScope.Core.Devices.DriveInfo" Alias="DriveInfo" />
+    <Using Include="DiskScope.Core.Devices.DriveNotFoundException" Alias="DriveNotFoundException" />
+  </ItemGroup>
+</Project>

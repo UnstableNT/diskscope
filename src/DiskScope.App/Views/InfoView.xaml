@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DiskScope.App.Views.InfoView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:DiskScope.App.ViewModels">
+  <ScrollViewer Padding="16">
+    <Grid ColumnSpacing="24" RowSpacing="16">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*" />
+        <ColumnDefinition Width="340" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+
+      <!-- Device information -->
+      <StackPanel Spacing="8">
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Geräteinformation" />
+        <ItemsControl ItemsSource="{x:Bind ViewModel.Device}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:InfoRow">
+              <Grid Padding="0,4" ColumnSpacing="16">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="160" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind Label}" />
+                <TextBlock Grid.Column="1" IsTextSelectionEnabled="True" Text="{x:Bind Value}" TextWrapping="Wrap" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <!-- Supported features -->
+      <StackPanel Grid.Column="1" Spacing="8">
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Unterstützte Funktionen" />
+        <ItemsControl ItemsSource="{x:Bind ViewModel.Features}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:FeatureRow">
+              <Grid Padding="0,3" ColumnSpacing="10">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="20" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <FontIcon FontSize="14" Glyph="{x:Bind Glyph}" Foreground="{x:Bind vm:InfoViewBrushes.Feature(Supported)}" />
+                <TextBlock Grid.Column="1" Text="{x:Bind Name}" />
+                <TextBlock Grid.Column="2" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="{x:Bind State}" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <!-- Acoustic and power management (SPEC 4.14) -->
+      <StackPanel Grid.Row="1" Grid.Column="1" Spacing="6" Visibility="{x:Bind ViewModel.AcousticVisible, Mode=OneWay}">
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Akustik und Energie" />
+        <TextBlock Text="{x:Bind ViewModel.AamText, Mode=OneWay}" TextWrapping="Wrap" />
+        <Slider Header="AAM: leise … schnell" IsEnabled="{x:Bind ViewModel.CanChangeAam, Mode=OneWay}" Maximum="254" Minimum="128" Value="{x:Bind ViewModel.AamLevel, Mode=TwoWay}" />
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Command="{x:Bind ViewModel.ApplyAamCommand}" Content="AAM setzen" IsEnabled="{x:Bind ViewModel.CanChangeAam, Mode=OneWay}" />
+          <Button Command="{x:Bind ViewModel.DisableAamCommand}" Content="AAM aus" IsEnabled="{x:Bind ViewModel.CanChangeAam, Mode=OneWay}" />
+        </StackPanel>
+        <TextBlock Margin="0,8,0,0" Text="{x:Bind ViewModel.ApmText, Mode=OneWay}" TextWrapping="Wrap" />
+        <Slider Header="APM: sparsam … leistungsstark" IsEnabled="{x:Bind ViewModel.CanChangeApm, Mode=OneWay}" Maximum="254" Minimum="1" Value="{x:Bind ViewModel.ApmLevel, Mode=TwoWay}" />
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Button Command="{x:Bind ViewModel.ApplyApmCommand}" Content="APM setzen" IsEnabled="{x:Bind ViewModel.CanChangeApm, Mode=OneWay}" />
+          <Button Command="{x:Bind ViewModel.DisableApmCommand}" Content="APM aus" IsEnabled="{x:Bind ViewModel.CanChangeApm, Mode=OneWay}" />
+        </StackPanel>
+        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.AcousticStatus, Mode=OneWay}" TextWrapping="Wrap" />
+      </StackPanel>
+
+      <!-- Volumes -->
+      <StackPanel Grid.Row="1" Spacing="8">
+        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="Volumes" />
+        <Grid Padding="8,4" ColumnSpacing="12" Background="{ThemeResource LayerFillColorDefaultBrush}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="1.5*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="Bezeichnung" />
+          <TextBlock Grid.Column="1" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Kapazität" />
+          <TextBlock Grid.Column="2" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Frei" />
+          <TextBlock Grid.Column="3" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Belegung" />
+          <TextBlock Grid.Column="4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Dateisystem" />
+          <TextBlock Grid.Column="5" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Seriennummer" />
+          <TextBlock Grid.Column="6" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Ausrichtung" />
+        </Grid>
+        <ItemsControl ItemsSource="{x:Bind ViewModel.Volumes}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:VolumeRow">
+              <Grid Padding="8,4" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="2*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="1.5*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{x:Bind Name}" TextTrimming="CharacterEllipsis" />
+                <TextBlock Grid.Column="1" Text="{x:Bind Capacity}" />
+                <TextBlock Grid.Column="2" Text="{x:Bind Free}" />
+                <Grid Grid.Column="3" ColumnSpacing="8">
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                  </Grid.ColumnDefinitions>
+                  <ProgressBar VerticalAlignment="Center" Maximum="100" Value="{x:Bind UsedPercent}" />
+                  <TextBlock Grid.Column="1" Text="{x:Bind Used}" />
+                </Grid>
+                <TextBlock Grid.Column="4" Text="{x:Bind FileSystem}" />
+                <TextBlock Grid.Column="5" Text="{x:Bind Serial}" />
+                <TextBlock Grid.Column="6" Text="{x:Bind Alignment}" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
+</UserControl>

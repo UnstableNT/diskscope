@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DiskScope.App.Views.ExtraTestsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:DiskScope.App.Controls"
+    xmlns:scottplot="using:ScottPlot.WinUI"
+    xmlns:vm="using:DiskScope.App.ViewModels">
+  <Grid Padding="16,8,0,16" ColumnSpacing="8">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="Auto" />
+    </Grid.ColumnDefinitions>
+
+    <Grid RowSpacing="8">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="*" />
+      </Grid.RowDefinitions>
+
+      <!-- Test list with selection and result columns (SPEC 4.11) -->
+      <StackPanel Spacing="2">
+        <Grid Padding="8,4" ColumnSpacing="12" Background="{ThemeResource LayerFillColorDefaultBrush}">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="40" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+          <TextBlock Grid.Column="1" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Test" />
+          <TextBlock Grid.Column="2" Style="{StaticResource BodyStrongTextBlockStyle}" Text="I/O/s" />
+          <TextBlock Grid.Column="3" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Zeit" />
+          <TextBlock Grid.Column="4" Style="{StaticResource BodyStrongTextBlockStyle}" Text="Transfer" />
+        </Grid>
+        <ItemsControl ItemsSource="{x:Bind ViewModel.Rows}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate x:DataType="vm:ExtraRow">
+              <Grid Padding="8,0" ColumnSpacing="12">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="40" />
+                  <ColumnDefinition Width="2*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <CheckBox MinWidth="0" AutomationProperties.Name="{x:Bind Name}" IsChecked="{x:Bind IsSelected, Mode=TwoWay}" />
+                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{x:Bind Name}" />
+                <TextBlock Grid.Column="2" VerticalAlignment="Center" Text="{x:Bind Iops, Mode=OneWay}" />
+                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{x:Bind Time, Mode=OneWay}" />
+                <TextBlock Grid.Column="4" VerticalAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}" Text="{x:Bind Transfer, Mode=OneWay}" />
+              </Grid>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+      </StackPanel>
+
+      <Border x:Name="CacheChart" Grid.Row="1" Background="{StaticResource PlotBackgroundBrush}" CornerRadius="8" Visibility="{x:Bind ViewModel.CacheTest, Mode=OneWay}">
+        <scottplot:WinUIPlot x:Name="Chart" />
+      </Border>
+    </Grid>
+
+    <ScrollViewer Grid.Column="1">
+      <StackPanel Style="{StaticResource SidebarPanelStyle}">
+        <Button
+            HorizontalAlignment="Stretch"
+            Command="{x:Bind ViewModel.StartStopCommand}"
+            Content="{x:Bind ViewModel.StartStopText, Mode=OneWay}"
+            IsEnabled="{x:Bind ViewModel.CanStartStop, Mode=OneWay}"
+            Style="{StaticResource AccentButtonStyle}" />
+        <ProgressBar Maximum="100" Value="{x:Bind ViewModel.Progress, Mode=OneWay}" />
+        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Text="{x:Bind ViewModel.Status, Mode=OneWay}" TextWrapping="Wrap" />
+
+        <TextBlock Style="{StaticResource SidebarHeaderStyle}" Text="Optionen" />
+        <CheckBox Content="Schreiben (löscht Daten!)" IsChecked="{x:Bind ViewModel.WriteMode, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.CanWrite}" ToolTipService.ToolTip="Schreibend messen; nur auf Laufwerken ohne Systempartition, mit Bestätigung" />
+        <CheckBox Content="Volumes vorher aushängen" IsChecked="{x:Bind ViewModel.DismountVolumes, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.WriteMode, Mode=OneWay}" />
+        <CheckBox Content="4-KiB-Ausrichtung" IsChecked="{x:Bind ViewModel.Align4K, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+        <controls:RangeOption ViewModel="{x:Bind ViewModel}" />
+        <CheckBox Content="Cache-Test (0–64 MiB)" IsChecked="{x:Bind ViewModel.CacheTest, Mode=TwoWay}" IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+        <TextBlock Style="{StaticResource CaptionTextBlockStyle}" Foreground="{ThemeResource TextFillColorSecondaryBrush}" Text="Der Cache-Test misst den Durchsatz bei wachsender Bereichsgröße; ein Abfall zeigt die Größe des Laufwerks-Caches." TextWrapping="Wrap" />
+      </StackPanel>
+    </ScrollViewer>
+  </Grid>
+</UserControl>

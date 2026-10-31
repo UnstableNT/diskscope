@@ -1,0 +1,129 @@
+{
+  "$comment": "DiskScope SMART attribute table. Names and interpretations from ATA/ACS conventions and public manufacturer documentation. kind: Count, Hours, Minutes, Temperature, Percent, DataSize, Raw. Percent: source current (normalized value) or raw (lowest raw byte). DataSize: unitBytes per raw unit. rawBytes: number of low raw bytes that carry the value (default 6).",
+  "generic": [
+    { "id": 1, "name": "Read Error Rate", "kind": "Count" },
+    { "id": 2, "name": "Throughput Performance", "kind": "Raw" },
+    { "id": 3, "name": "Spin-Up Time", "kind": "Raw" },
+    { "id": 4, "name": "Start/Stop Count", "kind": "Count" },
+    { "id": 5, "name": "Reallocated Sectors Count", "kind": "Count" },
+    { "id": 7, "name": "Seek Error Rate", "kind": "Count" },
+    { "id": 8, "name": "Seek Time Performance", "kind": "Raw" },
+    { "id": 9, "name": "Power-On Hours", "kind": "Hours", "rawBytes": 4 },
+    { "id": 10, "name": "Spin Retry Count", "kind": "Count" },
+    { "id": 11, "name": "Calibration Retry Count", "kind": "Count" },
+    { "id": 12, "name": "Power Cycle Count", "kind": "Count" },
+    { "id": 171, "name": "Program Fail Count", "kind": "Count" },
+    { "id": 172, "name": "Erase Fail Count", "kind": "Count" },
+    { "id": 174, "name": "Unexpected Power Loss Count", "kind": "Count" },
+    { "id": 184, "name": "End-to-End Error Count", "kind": "Count" },
+    { "id": 187, "name": "Reported Uncorrectable Errors", "kind": "Count" },
+    { "id": 188, "name": "Command Timeout", "kind": "Count" },
+    { "id": 189, "name": "High Fly Writes", "kind": "Count" },
+    { "id": 190, "name": "Airflow Temperature", "kind": "Temperature" },
+    { "id": 191, "name": "G-Sense Error Rate", "kind": "Count" },
+    { "id": 192, "name": "Power-Off Retract Count", "kind": "Count" },
+    { "id": 193, "name": "Load/Unload Cycle Count", "kind": "Count" },
+    { "id": 194, "name": "Temperature", "kind": "Temperature" },
+    { "id": 195, "name": "Hardware ECC Recovered", "kind": "Count" },
+    { "id": 196, "name": "Reallocation Event Count", "kind": "Count" },
+    { "id": 197, "name": "Current Pending Sector Count", "kind": "Count" },
+    { "id": 198, "name": "Offline Uncorrectable Sector Count", "kind": "Count" },
+    { "id": 199, "name": "UltraDMA CRC Error Count", "kind": "Count" },
+    { "id": 200, "name": "Write Error Rate", "kind": "Count" },
+    { "id": 220, "name": "Disk Shift", "kind": "Raw" },
+    { "id": 222, "name": "Loaded Hours", "kind": "Hours", "rawBytes": 4 },
+    { "id": 223, "name": "Load/Unload Retry Count", "kind": "Count" },
+    { "id": 224, "name": "Load Friction", "kind": "Raw" },
+    { "id": 226, "name": "Load-In Time", "kind": "Raw" },
+    { "id": 240, "name": "Head Flying Hours", "kind": "Hours", "rawBytes": 4 },
+    { "id": 241, "name": "Total LBAs Written", "kind": "DataSize", "unitBytes": 512 },
+    { "id": 242, "name": "Total LBAs Read", "kind": "DataSize", "unitBytes": 512 },
+    { "id": 254, "name": "Free Fall Protection", "kind": "Count" }
+  ],
+  "vendors": [
+    {
+      "name": "Samsung SSD",
+      "modelPrefixes": [ "Samsung SSD", "SAMSUNG MZ" ],
+      "attributes": [
+        { "id": 177, "name": "Wear Leveling Count", "kind": "Count" },
+        { "id": 179, "name": "Used Reserved Block Count", "kind": "Count" },
+        { "id": 181, "name": "Program Fail Count", "kind": "Count" },
+        { "id": 182, "name": "Erase Fail Count", "kind": "Count" },
+        { "id": 183, "name": "Runtime Bad Blocks", "kind": "Count" },
+        { "id": 187, "name": "Uncorrectable Error Count", "kind": "Count" },
+        { "id": 195, "name": "ECC Error Rate", "kind": "Count" },
+        { "id": 235, "name": "Power Recovery Count", "kind": "Count" },
+        { "id": 241, "name": "Total LBAs Written", "kind": "DataSize", "unitBytes": 512 }
+      ]
+    },
+    {
+      "name": "SanDisk / WD SSD",
+      "modelPrefixes": [ "SanDisk SD", "WDC WDS", "WD Blue SA", "WD Red SA", "WD Green" ],
+      "attributes": [
+        { "id": 165, "name": "Total Write/Erase Count", "kind": "Raw" },
+        { "id": 166, "name": "Minimum Write/Erase Count", "kind": "Count" },
+        { "id": 167, "name": "Minimum Bad Blocks per Die", "kind": "Count" },
+        { "id": 168, "name": "Maximum Write/Erase Count", "kind": "Count" },
+        { "id": 169, "name": "Total Bad Blocks", "kind": "Count" },
+        { "id": 170, "name": "Grown Bad Blocks", "kind": "Count" },
+        { "id": 173, "name": "Average Write/Erase Count", "kind": "Count" },
+        { "id": 230, "name": "Media Wear (Write/Erase Cycles Used)", "kind": "Raw" },
+        { "id": 232, "name": "Available Reserved Space", "kind": "Percent", "source": "current" },
+        { "id": 233, "name": "Total NAND Writes", "kind": "DataSize", "unitBytes": 1073741824 },
+        { "id": 234, "name": "Total NAND Reads", "kind": "DataSize", "unitBytes": 1073741824 },
+        { "id": 241, "name": "Total Host Writes", "kind": "DataSize", "unitBytes": 1073741824 },
+        { "id": 242, "name": "Total Host Reads", "kind": "DataSize", "unitBytes": 1073741824 },
+        { "id": 244, "name": "Thermal Throttle Status", "kind": "Raw" }
+      ]
+    },
+    {
+      "name": "Crucial / Micron SSD",
+      "modelPrefixes": [ "CT", "Crucial", "Micron" ],
+      "attributes": [
+        { "id": 170, "name": "Reserved Block Count", "kind": "Count" },
+        { "id": 173, "name": "Average Block-Erase Count", "kind": "Count" },
+        { "id": 180, "name": "Unused Reserved Block Count", "kind": "Count" },
+        { "id": 183, "name": "SATA Interface Downshift", "kind": "Count" },
+        { "id": 202, "name": "Percent Lifetime Remaining", "kind": "Percent", "source": "current" },
+        { "id": 206, "name": "Write Error Rate", "kind": "Count" },
+        { "id": 210, "name": "RAIN Recovery Count", "kind": "Count" },
+        { "id": 246, "name": "Total Host Sectors Written", "kind": "DataSize", "unitBytes": 512 },
+        { "id": 247, "name": "Host Program Page Count", "kind": "Count" },
+        { "id": 248, "name": "Background Program Page Count", "kind": "Count" }
+      ]
+    },
+    {
+      "name": "Intel SSD",
+      "modelPrefixes": [ "INTEL SSD" ],
+      "attributes": [
+        { "id": 225, "name": "Host Writes", "kind": "DataSize", "unitBytes": 33554432 },
+        { "id": 226, "name": "Workload Media Wear", "kind": "Raw" },
+        { "id": 227, "name": "Workload Host Read Percentage", "kind": "Percent", "source": "raw" },
+        { "id": 228, "name": "Workload Timer", "kind": "Minutes" },
+        { "id": 232, "name": "Available Reserved Space", "kind": "Percent", "source": "current" },
+        { "id": 233, "name": "Media Wearout Indicator", "kind": "Percent", "source": "current" },
+        { "id": 241, "name": "Host Writes", "kind": "DataSize", "unitBytes": 33554432 },
+        { "id": 242, "name": "Host Reads", "kind": "DataSize", "unitBytes": 33554432 },
+        { "id": 249, "name": "NAND Writes", "kind": "DataSize", "unitBytes": 1073741824 }
+      ]
+    },
+    {
+      "name": "Kingston SSD",
+      "modelPrefixes": [ "KINGSTON" ],
+      "attributes": [
+        { "id": 231, "name": "SSD Life Left", "kind": "Percent", "source": "current" },
+        { "id": 241, "name": "Lifetime Host Writes", "kind": "DataSize", "unitBytes": 1073741824 },
+        { "id": 242, "name": "Lifetime Host Reads", "kind": "DataSize", "unitBytes": 1073741824 }
+      ]
+    },
+    {
+      "name": "Seagate HDD",
+      "modelPrefixes": [ "ST" ],
+      "attributes": [
+        { "id": 1, "name": "Read Error Rate", "kind": "Raw" },
+        { "id": 7, "name": "Seek Error Rate", "kind": "Raw" },
+        { "id": 240, "name": "Head Flying Hours", "kind": "Hours", "rawBytes": 4 }
+      ]
+    }
+  ]
+}

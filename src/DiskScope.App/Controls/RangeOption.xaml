@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="DiskScope.App.Controls.RangeOption"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- "Bereich": checkbox plus dialog with start/end in GB or % (SPEC 4.1). -->
+  <StackPanel Spacing="4">
+    <StackPanel Orientation="Horizontal" Spacing="8">
+      <CheckBox
+          MinWidth="0"
+          Content="Bereich"
+          IsChecked="{x:Bind ViewModel.UseRange, Mode=TwoWay}"
+          IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+      <Button
+          Content="Festlegen …"
+          Click="OnEditClick"
+          IsEnabled="{x:Bind ViewModel.OptionsEnabled, Mode=OneWay}" />
+    </StackPanel>
+    <TextBlock
+        Style="{StaticResource CaptionTextBlockStyle}"
+        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+        Text="{x:Bind ViewModel.RangeText, Mode=OneWay}" />
+  </StackPanel>
+</UserControl>
